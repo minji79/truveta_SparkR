@@ -14,6 +14,24 @@ lecanemab_administration_all <- load_filtered_table(con, snapshot, 'MedicationAd
 #   colnames(lecanemab_user_rural)
 
 
+
+################################################
+#  from R data frame to Spark R dataframe (to merge in SQL)
+################################################
+
+# This converts the local 'df' into a Spark lazy table
+cohort_spark_df <- as.DataFrame(df)
+
+# You can then register it as a SQL table if you want to use SQL queries
+createOrReplaceTempView(cohort_spark_df, "cohort_tbl")
+
+################################################
+#  from R data frame to Spark R dataframe (to merge in SQL)
+################################################
+
+cohort_spark_df <- sdf_register(df, "cohort_tbl")
+
+
 ################################################################################################
 #  
 #  when dataset is too large you need to convert all dataset into SparkR DataFrame for SQL merge
